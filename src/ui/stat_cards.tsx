@@ -1,4 +1,4 @@
-import { createStyles, Group, Paper, Text, ThemeIcon, SimpleGrid } from '@mantine/core';
+import { createStyles, Group, Paper, Text, ThemeIcon, SimpleGrid, Title } from '@mantine/core';
 import { IconArrowUpRight, IconArrowDownRight } from '@tabler/icons-react';
 import React from 'react';
 import { roundDigit } from '../math/round';
@@ -58,9 +58,9 @@ export function StatsGridIcons({ data }: StatsGridIconsProps) {
             >
               {stat.title}
             </Text>
-            <Text weight={700} size="xl">
+            <Title weight={700} size="h1">
               {formatValue(stat.value, 3)}
-            </Text>
+            </Title>
           </div>
           <ThemeIcon
             color="gray"

@@ -5,6 +5,8 @@ import { roundDigit } from '../math/round';
 import { fetchColumnNumber } from '../data/fetch_column';
 import { arithmeticMean } from '../math/arithmetic_mean';
 import { standardDeviation } from '../math/standard_deviation';
+import CountUp from 'react-countup';
+import { valueGetters } from '@mantine/core/lib/Box/style-system-props/value-getters/value-getters';
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -19,10 +21,14 @@ const useStyles = createStyles((theme) => ({
 export interface StatsGridIconsProps {
   data: {
     title: string;
-    value: number | string;
     icon: "up" | "down";
-    small_value: number | string;
+
+    value: number;
+    value_is_percent: boolean;
+
+    small_value: number;
     small_description: string;
+    small_value_is_percent: boolean;
   }[];
 }
 
@@ -33,17 +39,8 @@ const icons = {
 
 export function StatsGridIcons({ data }: StatsGridIconsProps) {
   const { classes } = useStyles();
-  const stats = data.map((stat) => {
+  const stats = data.map((stat, map_index) => {
     const DiffIcon = icons[stat.icon];
-
-    let formatValue = (x: number | string, digits: number) => {
-      if (typeof x === "string") {
-        return x;
-      }
-
-      let rounded = roundDigit(x, digits);
-      return `${rounded}%`;
-    }
 
     return (
       <Paper withBorder p="md" radius="md" key={stat.title}>
@@ -59,7 +56,8 @@ export function StatsGridIcons({ data }: StatsGridIconsProps) {
               {stat.title}
             </Text>
             <Title weight={700} size="h1">
-              {formatValue(stat.value, 3)}
+              <CountUp end={stat.value} duration={1.5} decimals={3 * +stat.value_is_percent}/>
+              {stat.value_is_percent ? "%" : ""}
             </Title>
           </div>
           <ThemeIcon
@@ -74,7 +72,8 @@ export function StatsGridIcons({ data }: StatsGridIconsProps) {
         </Group>
         <Text color="dimmed" size="sm" mt="md">
           <Text component="span" color={stat.icon === "up" ? 'teal' : 'red'} weight={700}>
-            {formatValue(stat.small_value, 2)}
+            <CountUp end={stat.small_value} duration={1.5} decimals={2 * +stat.small_value_is_percent}/>
+            {stat.small_value_is_percent ? "%" : ""}
           </Text>{' '}
           {stat.small_description}
         </Text>
@@ -121,31 +120,39 @@ export function generateStatCardsData(): StatsGridIconsProps["data"] {
   return [
     {
       "title": "Personal Average",
-      "value": personal_average,
       "icon": compare_average ? "up" : "down",
+      "value": personal_average,
+      "value_is_percent": true,
       "small_value": personal_stddev,
-      "small_description": "standard deviation"
+      "small_description": "standard deviation",
+      "small_value_is_percent": true
     },
     {
       "title": "Class Average",
-      "value": class_average,
       "icon": compare_average ? "down" : "up",
+      "value": class_average,
+      "value_is_percent": true,
       "small_value": class_stddev,
-      "small_description": "standard deviation"
+      "small_description": "standard deviation",
+      "small_value_is_percent": true
     },
     {
       "title": "Absolute Difference",
-      "value": Math.abs(personal_average - class_average),
       "icon": compare_average ? "up" : "down",
+      "value": Math.abs(personal_average - class_average),
+      "value_is_percent": true,
       "small_value": abs_diff_stddev,
-      "small_description": `standard deviation of difference in averages`
+      "small_description": `standard deviation of difference in averages`,
+      "small_value_is_percent": true
     },
     {
       "title": "Full Marks",
-      "value": `${perfect_mark_count}`,
-      "icon": perfect_mark_count ? "up": "down",
+      "icon": perfect_mark_count ? "up" : "down",
+      "value": perfect_mark_count,
+      "value_is_percent": false,
       "small_value": perfect_mark_count / personal_numbers.length * 100,
-      "small_description": "of all exams"
+      "small_description": "of all exams",
+      "small_value_is_percent": true
     }
   ];
 }

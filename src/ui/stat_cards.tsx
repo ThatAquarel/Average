@@ -143,7 +143,7 @@ export function generateStatCardsData(): StatsGridIconsProps["data"] {
     {
       "title": "Full Marks",
       "value": `${perfect_mark_count}`,
-      "icon": perfect_mark_count === 0 ? "up": "down",
+      "icon": perfect_mark_count ? "up": "down",
       "small_value": perfect_mark_count / personal_numbers.length * 100,
       "small_description": "of all exams"
     }

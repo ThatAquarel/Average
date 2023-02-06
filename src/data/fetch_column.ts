@@ -7,15 +7,20 @@ export function fetchColumnNumber(column: number): number[] {
     let cells = (Array.from(html_cells)
         .filter(e => e instanceof HTMLTableCellElement) as HTMLTableCellElement[])
         .filter(c => c.cellIndex === column);
-    
+
     let numbers = cells
         .filter(c => c.innerText.trim() !== "")
         .map(c => {
-            let trimmed_string = c.innerText
-                .split("(")[1]
-                .split(")")[0];
-            return parseFloat(trimmed_string);
-        });
+            try {
+                let trimmed_string = c.innerText
+                    .split("(")[1]
+                    .split(")")[0];
+                return parseFloat(trimmed_string);
+            } finally {
+                return -1; 
+            }
+        })
+        .filter(n => n !== -1);
 
     return numbers;
 }

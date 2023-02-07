@@ -16,8 +16,8 @@ export function fetchColumnNumber(column: number): number[] {
                     .split("(")[1]
                     .split(")")[0];
                 return parseFloat(trimmed_string);
-            } finally {
-                return -1; 
+            } catch (_) {
+                return -1;
             }
         })
         .filter(n => n !== -1);

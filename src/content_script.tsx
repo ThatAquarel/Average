@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { StatsGridIcons, generateStatCardsData } from "./ui/stat_cards";
+import { fetchTable } from "./data/fetch_table";
 
 function render_react() {
   const tables = document.getElementsByClassName("BlueTableau");
@@ -18,4 +19,6 @@ function render_react() {
   tables[0].parentElement?.prepend(react_root);
 }
 
-render_react()
+render_react();
+
+console.log(fetchTable());

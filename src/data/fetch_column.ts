@@ -1,5 +1,4 @@
-const SELECTOR_TABLE_ROOT = ".BlueTableau > tbody";
-const SELECTOR_CELL_NUMBER = "tr:not([class]) > td[nowrap]";
+import { SELECTOR_TABLE_ROOT, SELECTOR_CELL_NUMBER } from "./parse";
 
 export function fetchColumnNumber(column: number): number[] {
     let html_cells = document.querySelectorAll(`${SELECTOR_TABLE_ROOT} > ${SELECTOR_CELL_NUMBER}`);
